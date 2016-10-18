@@ -77,6 +77,16 @@ ply.cl_loadout[cl_weapons[cl_weapon].ClassName] = false
 ply:StripWeapon(cl_weapons[cl_weapon].ClassName)
 end)
 
+net.Receive("loadout_unmarkall",function(len,ply)
+for k, v in pairs(cl_weapons) do
+if ply:HasWeapon(v.ClassName) then
+ply.cl_loadout[v.ClassName] = false
+end
+end
+ply:StripWeapons()
+ply:StripAmmo()
+end)
+
 function loadout_start()
 local cl_hl2 = { "weapon_crowbar", "weapon_pistol", "weapon_357", "weapon_smg1", "weapon_ar2", "weapon_shotgun", "weapon_crossbow", "weapon_frag", "weapon_rpg", "weapon_physcannon", "weapon_bugbait" }
 local cl_hl2_names = { "Crowbar", "9mm Pistol", ".357 Magnum", "SMG", "Pulse Rifle", "Shotgun", "Crossbow", "Frag Grenade", "RPG", "Gravity Gun", "Bug Bait" }
@@ -154,3 +164,4 @@ hook.Add("PlayerLoadout","Loadout Respawn",loadout_respawn)
 util.AddNetworkString("loadout_c2s")
 util.AddNetworkString("loadout_giveweapon")
 util.AddNetworkString("loadout_removeweapon")
+util.AddNetworkString("loadout_unmarkall")
