@@ -62,7 +62,7 @@ if cl_clabel[v.Category] != nil then
 cl_clabel[cl_cnum]:Remove()
 else
 cl_clabel[cl_cnum]:SetLabel(v.Category)
-cl_clabel[cl_cnum]:SetExpanded(1)
+cl_clabel[cl_cnum]:SetExpanded(0)
 cl_clabel[cl_cnum]:Dock(TOP)
 
 cl_clabel[v.Category] = cl_clabel[cl_cnum]
@@ -93,6 +93,24 @@ end
 cl_ci[v.Category] = cl_ci[v.Category] + 1
 end
 end
+end
+cl_options = vgui.Create("DCollapsibleCategory",panel)
+cl_options:SetLabel("[Options]")
+cl_options:SetExpanded(1)
+cl_options:Dock(TOP)
+
+cl_unmarkall = vgui.Create("DButton",cl_options)
+cl_unmarkall:SetTextColor(Color(0,0,0))
+cl_unmarkall:SetText("Unmark All")
+cl_unmarkall:SetPos(25,25)
+function cl_unmarkall:DoClick()
+for k, v in pairs(cl_weapons) do
+if cl_loadout[v.ClassName] then
+v.cl_label:SetValue(false)
+end
+end
+net.Start("loadout_unmarkall")
+net.SendToServer()
 end
 end
 
