@@ -63,7 +63,7 @@ pc_sounds = {
 "player/footsteps/concrete1.wav", 
 "player/footsteps/concrete2.wav", 
 "player/footsteps/concrete3.wav", 
-"player/footsteps/concrete4.wav", 
+"player/footsteps/concrete4.wav" 
 }
 
 hook.Add("KeyPress","Parkcore Main",parkcore_main)
