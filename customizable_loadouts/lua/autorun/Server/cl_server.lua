@@ -3,13 +3,24 @@ ply.cl_spawned = true
 
 ply.cl_loadout = { }
 
-ply:RemoveAllAmmo()
+local cl_storedweapons = net.ReadTable()
+if cl_storedweapons[1] != nil then
+for k, v in pairs(cl_storedweapons) do
+ply.cl_loadout[v] = true
+end
+else
 for k, v in pairs(cl_weapons) do
 if ply:HasWeapon(v.ClassName) then
 ply.cl_loadout[v.ClassName] = true
-else
-ply.cl_loadout[v.ClassName] = false
 end
+end
+end
+
+ply:RemoveAllAmmo()
+ply:StripWeapons()
+for k, v in pairs(cl_weapons) do
+if ply.cl_loadout[v.ClassName] != nil then
+ply:Give(v.ClassName)
 if v.Primary.Ammo != nil then
 if v.Primary.Ammo != "none" then
 if v.Primary.ClipSize != nil then
@@ -18,8 +29,6 @@ ply:GiveAmmo(v.Primary.ClipSize * 16,v.Primary.Ammo,true)
 else
 ply:GiveAmmo(16,v.Primary.Ammo,true)
 end
-else
-ply:GiveAmmo(16,v.Primary.Ammo,true)
 end
 end
 end
@@ -31,8 +40,7 @@ ply:GiveAmmo(v.Secondary.ClipSize * 16,v.Secondary.Ammo,true)
 else
 ply:GiveAmmo(16,v.Secondary.Ammo,true)
 end
-else
-ply:GiveAmmo(16,v.Secondary.Ammo,true)
+end
 end
 end
 end
@@ -73,21 +81,21 @@ end)
 
 net.Receive("loadout_removeweapon",function(len,ply)
 local cl_weapon = net.ReadInt(16)
-ply.cl_loadout[cl_weapons[cl_weapon].ClassName] = false
+ply.cl_loadout[cl_weapons[cl_weapon].ClassName] = nil
 ply:StripWeapon(cl_weapons[cl_weapon].ClassName)
 end)
 
 net.Receive("loadout_unmarkall",function(len,ply)
 for k, v in pairs(cl_weapons) do
-if ply:HasWeapon(v.ClassName) then
-ply.cl_loadout[v.ClassName] = false
+if ply.cl_loadout[v.ClassName] != nil then
+ply.cl_loadout[v.ClassName] = nil
 end
 end
 ply:StripWeapons()
 ply:StripAmmo()
 end)
 
-function loadout_start()
+function loadout_initialize()
 local cl_hl2 = { "weapon_crowbar", "weapon_pistol", "weapon_357", "weapon_smg1", "weapon_ar2", "weapon_shotgun", "weapon_crossbow", "weapon_frag", "weapon_rpg", "weapon_physcannon", "weapon_bugbait" }
 local cl_hl2_names = { "Crowbar", "9mm Pistol", ".357 Magnum", "SMG", "Pulse Rifle", "Shotgun", "Crossbow", "Frag Grenade", "RPG", "Gravity Gun", "Bug Bait" }
 
@@ -124,12 +132,12 @@ table.insert(cl_weapons,{ Spawnable = true, AdminOnly = false, ClassName = cl_gm
 table.Add(cl_weapons,weapons.GetList())
 end
 
-function loadout_respawn(ply)
+function loadout_spawn(ply)
 if ply.cl_spawned == nil then return end
 
 ply:RemoveAllAmmo()
 for k, v in pairs(cl_weapons) do
-if ply.cl_loadout[v.ClassName] then
+if ply.cl_loadout[v.ClassName] != nil then
 ply:Give(v.ClassName)
 if v.Primary.Ammo != nil then
 if v.Primary.Ammo != "none" then
@@ -158,10 +166,10 @@ end
 return true
 end
 
-hook.Add("Initialize","Loadout Start",loadout_start)
-hook.Add("PlayerLoadout","Loadout Respawn",loadout_respawn)
-
 util.AddNetworkString("loadout_c2s")
 util.AddNetworkString("loadout_giveweapon")
 util.AddNetworkString("loadout_removeweapon")
 util.AddNetworkString("loadout_unmarkall")
+
+hook.Add("Initialize","Loadout Initialize",loadout_initialize)
+hook.Add("PlayerLoadout","Loadout Spawn",loadout_spawn)
