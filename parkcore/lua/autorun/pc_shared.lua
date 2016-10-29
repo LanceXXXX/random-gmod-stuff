@@ -58,10 +58,16 @@ end
 end
 
 function parkcore_grab(ply)
-if !ply:KeyDown(IN_USE) then return end
+if ply.pc_dontgrab != nil then
+local pc_time = CurTime()
+if ply.pc_delay == nil then ply.pc_delay = pc_time + 2 end
+if pc_time < ply.pc_delay then return else ply.pc_dontgrab = nil ply.pc_delay = nil end
+end
 
 if ply:OnGround() then return end
-if ply.pc_dontgrab != nil then return end
+
+if ply.pc_dontkick == nil then
+if !ply:KeyDown(IN_USE) then return end
 
 local pc_playerpos = ply:GetPos()
 local pc_playerang = math.rad(ply:EyeAngles().yaw)
@@ -69,48 +75,35 @@ local pc_playerang = math.rad(ply:EyeAngles().yaw)
 local pc_angcos = math.cos(pc_playerang)
 local pc_angsin = math.sin(pc_playerang)
 
-local pc_top = util.TraceLine( { start = pc_playerpos + Vector(0,0,108), endpos = (pc_playerpos + Vector(0,0,108)) + Vector(pc_angcos * 48,pc_angsin * 48,0), filter = ply } )
-local pc_bottom = util.TraceLine( { start = (pc_playerpos + Vector(0,0,24)), endpos = (pc_playerpos + Vector(0,0,24)) + Vector(pc_angcos * 48,pc_angsin * 48,48), filter = ply } )
+local pc_top = util.TraceLine( { start = pc_playerpos + Vector(0,0,108), endpos = (pc_playerpos + Vector(0,0,108)) + Vector(pc_angcos * 36,pc_angsin * 36,0), filter = ply } )
+local pc_bottom = util.TraceLine( { start = (pc_playerpos + Vector(0,0,24)), endpos = (pc_playerpos + Vector(0,0,24)) + Vector(pc_angcos * 36,pc_angsin * 36,36), filter = ply } )
 
 if !pc_top.Hit && pc_bottom.Hit then
 if CLIENT then if IsFirstTimePredicted() then ply:EmitSound(pc_sounds[math.random(1,4)]) end end
-ply.pc_dontkick = true
-ply.pc_dontgrab = true
 ply:SetMoveType(MOVETYPE_NONE)
 ply:SetLocalVelocity(Vector(0,0,0))
-hook.Add("PlayerPostThink","Parkcore Grabbing",function(ply)
+ply.pc_dontkick = true
+end
+else
 local pc_playerpos = ply:GetPos()
 local pc_playerang = math.rad(ply:EyeAngles().yaw)
 
 local pc_angcos = math.cos(pc_playerang)
 local pc_angsin = math.sin(pc_playerang)
 
-local pc_top = util.TraceLine( { start = pc_playerpos + Vector(0,0,108), endpos = (pc_playerpos + Vector(0,0,108)) + Vector(pc_angcos * 48,pc_angsin * 48,0), filter = ply } )
-local pc_bottom = util.TraceLine( { start = (pc_playerpos + Vector(0,0,24)), endpos = (pc_playerpos + Vector(0,0,24)) + Vector(pc_angcos * 48,pc_angsin * 48,48), filter = ply } )
+local pc_top = util.TraceLine( { start = pc_playerpos + Vector(0,0,108), endpos = (pc_playerpos + Vector(0,0,108)) + Vector(pc_angcos * 36,pc_angsin * 36,0), filter = ply } )
+local pc_bottom = util.TraceLine( { start = (pc_playerpos + Vector(0,0,24)), endpos = (pc_playerpos + Vector(0,0,24)) + Vector(pc_angcos * 36,pc_angsin * 36,36), filter = ply } )
 
 if pc_top.Hit || !pc_bottom.Hit || !ply:Alive() then
 ply.pc_dontkick = nil
+ply.pc_dontgrab = true
 ply:SetMoveType(MOVETYPE_WALK)
-hook.Remove("PlayerPostThink","Parkcore Grabbing")
-ply.grabdelay = CurTime() + 2
-hook.Add("PlayerPostThink","Parkcore Grab Delay",function(ply)
-if CurTime() < ply.grabdelay then return end
-ply.pc_dontgrab = nil
-hook.Remove("PlayerPostThink","Parkcore Grab Delay")
-end)
 elseif ply:KeyPressed(IN_JUMP) then
 ply.pc_dontkick = nil
+ply.pc_dontgrab = true
 ply:SetMoveType(MOVETYPE_WALK)
 ply:SetLocalVelocity(Vector(0,0,325))
-hook.Remove("PlayerPostThink","Parkcore Grabbing")
-ply.grabdelay = CurTime() + 2
-hook.Add("PlayerPostThink","Parkcore Grab Delay",function(ply)
-if CurTime() < ply.grabdelay then return end
-ply.pc_dontgrab = nil
-hook.Remove("PlayerPostThink","Parkcore Grab Delay")
-end)
 end
-end)
 end
 end
 
