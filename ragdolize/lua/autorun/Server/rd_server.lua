@@ -15,6 +15,7 @@ end
 
 ply.rd_ragdoll:SetPos(ply:GetPos())
 
+ply:SetMoveType(MOVETYPE_NONE)
 ply:AddFlags(FL_FROZEN)
 ply:SetNotSolid(true)
 ply:SetNoDraw(true)
@@ -68,6 +69,7 @@ ply.rd_ragdoll:Remove()
 ply.rd_ragdoll = nil
 
 ply:RemoveFlags(FL_FROZEN)
+ply:SetMoveType(MOVETYPE_WALK)
 
 if !ply.invul then ply:RemoveFlags(FL_GODMODE) end
 
@@ -92,6 +94,7 @@ ply:DrawWorldModel(true)
 ply:DrawViewModel(true)
 
 ply:RemoveFlags(FL_FROZEN)
+ply:SetMoveType(MOVETYPE_WALK)
 
 if !ply.invul then ply:RemoveFlags(FL_GODMODE) end
 
@@ -128,6 +131,7 @@ ply:DrawWorldModel(true)
 ply:DrawViewModel(true)
 
 ply:RemoveFlags(FL_FROZEN)
+ply:SetMoveType(MOVETYPE_WALK)
 
 if !ply.invul then ply:RemoveFlags(FL_GODMODE) end
 
