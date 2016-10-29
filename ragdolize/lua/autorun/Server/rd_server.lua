@@ -44,11 +44,6 @@ ply:SetParent(ply.rd_ragdoll)
 ply:SetObserverMode(OBS_MODE_CHASE)
 ply:SpectateEntity(ply.rd_ragdoll)
 
-ply:SetMoveType(MOVETYPE_WALK)
-ply:Freeze(false)
-
-if !ply.invul then ply:GodDisable() end
-
 ply.rd_ragdolized = true
 else
 local rd_velz = ply.rd_ragdoll:GetVelocity().z
@@ -68,8 +63,8 @@ ply:DrawViewModel(true)
 ply.rd_ragdoll:Remove()
 ply.rd_ragdoll = nil
 
-ply:RemoveFlags(FL_FROZEN)
 ply:SetMoveType(MOVETYPE_WALK)
+ply:RemoveFlags(FL_FROZEN)
 
 if !ply.invul then ply:RemoveFlags(FL_GODMODE) end
 
@@ -93,8 +88,8 @@ ply:SetObserverMode(0)
 ply:DrawWorldModel(true)
 ply:DrawViewModel(true)
 
-ply:RemoveFlags(FL_FROZEN)
 ply:SetMoveType(MOVETYPE_WALK)
+ply:RemoveFlags(FL_FROZEN)
 
 if !ply.invul then ply:RemoveFlags(FL_GODMODE) end
 
@@ -130,8 +125,8 @@ ply:SetObserverMode(0)
 ply:DrawWorldModel(true)
 ply:DrawViewModel(true)
 
-ply:RemoveFlags(FL_FROZEN)
 ply:SetMoveType(MOVETYPE_WALK)
+ply:RemoveFlags(FL_FROZEN)
 
 if !ply.invul then ply:RemoveFlags(FL_GODMODE) end
 
