@@ -1,6 +1,6 @@
 function clientsounds_client(ply,cmd,args)
 if args[1] == nil then return end
-net.Start("clientsounds_clientc2s")
+net.Start("clientsounds_client_c2s")
 net.WriteString(args[1])
 
 net.SendToServer()
@@ -8,21 +8,21 @@ end
 
 function clientsounds_global(ply,cmd,args)
 if args[1] == nil then return end
-net.Start("clientsounds_globalc2s")
+net.Start("clientsounds_global_c2s")
 net.WriteString(args[1])
 
 net.SendToServer()
 end
 
 function clientsounds_globalstop(ply,cmd,args)
-net.Start("clientsounds_globalstopc2s")
+net.Start("clientsounds_globalstop_c2s")
 
 net.SendToServer()
 end
 
 function clientsounds_stream(ply,cmd,args)
 if args[1] == nil then return end
-net.Start("clientsounds_streamc2s")
+net.Start("clientsounds_stream_c2s")
 net.WriteString(args[1])
 
 net.SendToServer()
@@ -47,17 +47,27 @@ function clientsounds_stop(ply,cmd,args)
 RunConsoleCommand("stopsound")
 end
 
-net.Receive("clientsounds_globals2c",function(len,ply)
+net.Receive("clientsounds_client_s2c",function(len,ply)
+local cs_player = net.ReadEntity()
+local cs_sound = net.ReadString()
+
+if cs_player != LocalPlayer() then
+cs_player:EmitSound(cs_sound,86,100,1,100)
+end
+cs_player:EmitSound(cs_sound,86,100,1,101)
+end)
+
+net.Receive("clientsounds_global_s2c",function(len,ply)
 local cs_sound = net.ReadString()
 
 RunConsoleCommand("play",cs_sound)
 end)
 
-net.Receive("clientsounds_globalstops2c",function(len,ply)
+net.Receive("clientsounds_globalstop_s2c",function(len,ply)
 RunConsoleCommand("stopsound")
 end)
 
-net.Receive("clientsounds_streams2c",function(len,ply)
+net.Receive("clientsounds_stream_s2c",function(len,ply)
 if cs_blockurl > 0 then return end
 local cs_url = net.ReadString()
 
