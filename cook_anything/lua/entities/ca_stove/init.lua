@@ -22,13 +22,14 @@ function ENT:StartTouch(entity)
 if entity:IsPlayer() || entity:IsNPC() || entity:IsRagdoll() then return end
 
 if entity:GetClass() != "ca_food" then
-if entity:GetPhysicsObject():GetMass() > 100 then return end
+if entity:GetClass() == "ca_stove" then return end
 
 entity.food = ents.Create("ca_food")
 entity.food:SetModel(entity:GetModel())
 entity.food:SetSkin(entity:GetSkin())
 
 entity.food:SetPos(entity:GetPos())
+if entity:OBBMaxs().x > 17 && entity:OBBMaxs().y > 26 then entity.food:SetAngles(entity:GetAngles()) end
 
 entity:Remove()
 entity.food:Spawn()
