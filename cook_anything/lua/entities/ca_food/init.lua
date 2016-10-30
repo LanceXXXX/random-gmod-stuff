@@ -16,7 +16,6 @@ end
 self.size = self:OBBMaxs().z * 4
 self.cookhealth = self.size
 self:SetColor(Color(170,170,170,255))
-self.sound = CreateSound(self.Entity,"ca_eat.ogg")
 end
 
 function ENT:Think()
