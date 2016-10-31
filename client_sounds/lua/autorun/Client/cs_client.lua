@@ -24,7 +24,12 @@ function clientsounds_stream(ply,cmd,args)
 if args[1] == nil then return end
 net.Start("clientsounds_stream_c2s")
 net.WriteString(args[1])
-
+if args[2] != nil then
+args[2] = tonumber(args[2])
+if args[2] != nil then
+if args[2] > 0 then net.WriteBool(true) end
+end
+end
 net.SendToServer()
 end
 
@@ -71,17 +76,47 @@ net.Receive("clientsounds_stream_s2c",function(len,ply)
 if cs_blockurl > 0 then return end
 local cs_url = net.ReadString()
 
+if net.ReadBool() then
+sound.PlayURL(cs_url,"noplay noblock",function(url)
+
+if IsValid(url) then
+if cs_currenturl != nil then cs_currenturl:Stop() end
+cs_currenturl = url
+url:SetVolume(cs_volume)
+url:EnableLooping(true)
+url:Play()
+elseif IsValid(url) then
+
+if cs_currenturl != nil then cs_currenturl:Stop() end
+cs_currenturl = url
+url:SetVolume(cs_volume)
+url:EnableLooping(true)
+url:Play()
+else
+LocalPlayer():ChatPrint("Invalid URL! Try accessing the stream directly.")
+end
+end)
+else
 sound.PlayURL(cs_url,"noplay",function(url)
 
 if IsValid(url) then
 if cs_currenturl != nil then cs_currenturl:Stop() end
 cs_currenturl = url
 url:SetVolume(cs_volume)
+url:EnableLooping(false)
+url:Play()
+elseif IsValid(url) then
+
+if cs_currenturl != nil then cs_currenturl:Stop() end
+cs_currenturl = url
+url:SetVolume(cs_volume)
+url:EnableLooping(false)
 url:Play()
 else
 LocalPlayer():ChatPrint("Invalid URL! Try accessing the stream directly.")
 end
 end)
+end
 end)
 
 function clientsounds_cvar_volume(ply,cmd,args)
