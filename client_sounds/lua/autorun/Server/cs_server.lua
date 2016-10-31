@@ -60,11 +60,12 @@ return
 end
 
 local cs_url = net.ReadString()
+local cs_loop = net.ReadBool()
 
 PrintMessage(3,ply:GetName() .. " opened " .. cs_url)
 net.Start("clientsounds_stream_s2c")
 net.WriteString(cs_url)
-if net.ReadBool() then net.WriteBool(true) end
+if cs_loop then net.WriteBool(true) else net.WriteBool(false) end
 
 net.Broadcast()
 end)
