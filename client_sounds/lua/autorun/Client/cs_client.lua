@@ -27,8 +27,10 @@ net.WriteString(args[1])
 if args[2] != nil then
 args[2] = tonumber(args[2])
 if args[2] != nil then
-if args[2] > 0 then net.WriteBool(true) end
+if args[2] > 0 then net.WriteBool(true) else net.WriteBool(false) end
 end
+else
+net.WriteBool(false)
 end
 net.SendToServer()
 end
@@ -57,9 +59,9 @@ local cs_player = net.ReadEntity()
 local cs_sound = net.ReadString()
 
 if cs_player != LocalPlayer() then
-cs_player:EmitSound(cs_sound,86,100,1,100)
+cs_player:EmitSound(cs_sound,86,100,1,CHAN_VOICE)
 end
-cs_player:EmitSound(cs_sound,86,100,1,101)
+cs_player:EmitSound(cs_sound,86,100,1,CHAN_VOICE2)
 end)
 
 net.Receive("clientsounds_global_s2c",function(len,ply)
@@ -74,9 +76,11 @@ end)
 
 net.Receive("clientsounds_stream_s2c",function(len,ply)
 if cs_blockurl > 0 then return end
-local cs_url = net.ReadString()
 
-if net.ReadBool() then
+local cs_url = net.ReadString()
+local cs_loop = net.ReadBool()
+
+if cs_loop then
 sound.PlayURL(cs_url,"noplay noblock",function(url)
 
 if IsValid(url) then
