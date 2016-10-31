@@ -64,6 +64,7 @@ local cs_url = net.ReadString()
 PrintMessage(3,ply:GetName() .. " opened " .. cs_url)
 net.Start("clientsounds_stream_s2c")
 net.WriteString(cs_url)
+if net.ReadBool() then net.WriteBool(true) end
 
 net.Broadcast()
 end)
