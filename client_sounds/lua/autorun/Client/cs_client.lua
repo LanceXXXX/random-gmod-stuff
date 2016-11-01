@@ -70,7 +70,6 @@ if cs_player != LocalPlayer() then
 cs_player:EmitSound(cs_sound,86,100,1,CHAN_VOICE)
 end
 cs_player:EmitSound(cs_sound,86,100,1,CHAN_VOICE2)
-print(cs_sound)
 end)
 
 net.Receive("clientsounds_random_s2c",function(len,ply)
@@ -82,6 +81,7 @@ if cs_player != LocalPlayer() then
 cs_player:EmitSound(cs_sound,86,100,1,CHAN_VOICE)
 end
 cs_player:EmitSound(cs_sound,86,100,1,CHAN_VOICE2)
+print(cs_sound)
 end)
 
 net.Receive("clientsounds_global_s2c",function(len,ply)
