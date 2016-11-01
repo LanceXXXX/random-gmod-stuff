@@ -58,6 +58,7 @@ end
 
 function clientsounds_stop(ply,cmd,args)
 RunConsoleCommand("stopsound")
+if cs_currenturl != nil then cs_currenturl:Stop() end
 end
 
 net.Receive("clientsounds_client_s2c",function(len,ply)
@@ -91,6 +92,7 @@ end)
 
 net.Receive("clientsounds_globalstop_s2c",function(len,ply)
 RunConsoleCommand("stopsound")
+if cs_currenturl != nil then cs_currenturl:Stop() end
 end)
 
 net.Receive("clientsounds_stream_s2c",function(len,ply)
