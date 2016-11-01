@@ -55,6 +55,7 @@ RunConsoleCommand("stopsound")
 end
 
 net.Receive("clientsounds_client_s2c",function(len,ply)
+if cs_spawned == nil then return end
 local cs_player = net.ReadEntity()
 local cs_sound = net.ReadString()
 
@@ -171,6 +172,10 @@ cs_blockurl = 0
 end
 end
 
+function clientsounds_spawn()
+cs_spawned = true
+end
+
 concommand.Add("snd",clientsounds_client)
 concommand.Add("gsnd",clientsounds_global)
 concommand.Add("gssnd",clientsounds_globalstop)
@@ -183,3 +188,4 @@ concommand.Add("cs_client_urlvolume",clientsounds_cvar_volume)
 concommand.Add("cs_client_blockurl",clientsounds_cvar_blockurl)
 
 hook.Add("Initialize","Clientsounds Initialize",clientsounds_initialize)
+hook.Add("InitPostEntity","Clientsounds Spawn",clientsounds_spawn)
