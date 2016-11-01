@@ -6,6 +6,12 @@ net.WriteString(args[1])
 net.SendToServer()
 end
 
+function clientsounds_random()
+net.Start("clientsounds_random_c2s")
+
+net.SendToServer()
+end
+
 function clientsounds_global(ply,cmd,args)
 if args[1] == nil then return end
 net.Start("clientsounds_global_c2s")
@@ -55,6 +61,18 @@ RunConsoleCommand("stopsound")
 end
 
 net.Receive("clientsounds_client_s2c",function(len,ply)
+if cs_spawned == nil then return end
+local cs_player = net.ReadEntity()
+local cs_sound = net.ReadString()
+
+if cs_player != LocalPlayer() then
+cs_player:EmitSound(cs_sound,86,100,1,CHAN_VOICE)
+end
+cs_player:EmitSound(cs_sound,86,100,1,CHAN_VOICE2)
+print(cs_sound)
+end)
+
+net.Receive("clientsounds_random_s2c",function(len,ply)
 if cs_spawned == nil then return end
 local cs_player = net.ReadEntity()
 local cs_sound = net.ReadString()
@@ -177,6 +195,7 @@ cs_spawned = true
 end
 
 concommand.Add("snd",clientsounds_client)
+concommand.Add("sndrandom",clientsounds_random)
 concommand.Add("gsnd",clientsounds_global)
 concommand.Add("gssnd",clientsounds_globalstop)
 concommand.Add("url",clientsounds_stream)
