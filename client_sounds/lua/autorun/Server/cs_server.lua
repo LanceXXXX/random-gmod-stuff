@@ -132,6 +132,10 @@ end
 function clientsounds_initialize()
 cs_random = file.Find("sound/*.ogg","GAME","namedesc")
 cs_max = table.getn(cs_random)
+
+for k, v in pairs(cs_random) do
+resource.AddSingleFile("sound/" .. v)
+end
 end
 
 util.AddNetworkString("clientsounds_client_c2s")
