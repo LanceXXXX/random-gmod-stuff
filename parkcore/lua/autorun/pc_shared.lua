@@ -1,3 +1,5 @@
+AddCSLuaFile()
+
 function parkcore_kick(ply,key)
 if key != IN_JUMP then return end
 
