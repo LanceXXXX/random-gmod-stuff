@@ -47,5 +47,5 @@ end
 caller:SetHealth(caller:Health() + self.size)
 self:Remove()
 
-caller:EmitSound("sounds/ca_eat.ogg")
+caller:EmitSound("cook_anything/ca_eat.ogg")
 end
