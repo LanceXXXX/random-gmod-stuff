@@ -1,5 +1,8 @@
-net.Receive("ragdolize_toggle",function(len,ply)
+function ragdolize_toggle(ply)
+if ply == NULL then return end
+
 if !ply:Alive() then return end
+
 if ply.rd_ragdolized == nil then
 
 ply.invul = ply:HasGodMode()
@@ -70,7 +73,7 @@ if !ply.invul then ply:RemoveFlags(FL_GODMODE) end
 
 ply.rd_ragdolized = nil
 end
-end)
+end
 
 function ragdolize_remove(ragdoll)
 if !ragdoll:GetNWBool("IsRagdolized",false) then return end
@@ -135,7 +138,7 @@ ply.rd_ragdoll = nil
 ply.rd_ragdolized = nil
 end
 
-util.AddNetworkString("ragdolize_toggle")
-
 hook.Add("EntityRemoved","Ragdolize Remove",ragdolize_remove)
 hook.Add("PlayerDeath","Ragdolize Death",ragdolize_death)
+
+concommand.Add("ragdolize",ragdolize_toggle)
