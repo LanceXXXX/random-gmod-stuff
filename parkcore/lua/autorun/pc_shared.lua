@@ -39,10 +39,10 @@ local pc_playerang = math.rad(ply:EyeAngles().yaw)
 local pc_angcos = math.cos(pc_playerang + pc_ang)
 local pc_angsin = math.sin(pc_playerang + pc_ang)
 
-local pc_front = util.TraceLine( { start = pc_playerpos, endpos = pc_playerpos + Vector(-pc_angcos * pc_tracedist,-pc_angsin * pc_tracedist,0), filter = ply } )
-local pc_back = util.TraceLine( { start = pc_playerpos, endpos = pc_playerpos + Vector(pc_angcos * pc_tracedist,pc_angsin * pc_tracedist,0), filter = ply } )
+local pc_front = util.TraceLine( { start = pc_playerpos, endpos = pc_playerpos + Vector(pc_angcos * pc_tracedist,pc_angsin * pc_tracedist,0), filter = ply } )
+local pc_back = util.TraceLine( { start = pc_playerpos, endpos = pc_playerpos + Vector(-pc_angcos * pc_tracedist,-pc_angsin * pc_tracedist,0), filter = ply } )
 
-if pc_front.Hit && !pc_back.Hit then
+if !pc_front.Hit && pc_back.Hit && !pc_back.HitSky then
 local pc_speed = ply:GetVelocity().z
 
 if pc_speed > -750 then
