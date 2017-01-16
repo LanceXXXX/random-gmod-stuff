@@ -176,7 +176,7 @@ function clientsounds_initialize()
 local cs_cvar_volume = file.Read("cs_volume.txt","DATA")
 if cs_cvar_volume != nil then
 cs_cvar_volume = tonumber(cs_cvar_volume)
-if cs_cvar_volume == nil then return end
+if cs_cvar_volume == nil then cs_volume = 1 return end
 cs_volume = cs_cvar_volume
 else
 cs_volume = 1
@@ -185,7 +185,7 @@ end
 local cs_cvar_blockurl = file.Read("cs_blockurl.txt","DATA")
 if cs_cvar_blockurl != nil then
 cs_cvar_blockurl = tonumber(cs_cvar_blockurl)
-if cs_cvar_blockurl == nil then return end
+if cs_cvar_blockurl == nil then cs_blockurl = 0 return end
 cs_blockurl = cs_cvar_blockurl
 else
 cs_blockurl = 0
