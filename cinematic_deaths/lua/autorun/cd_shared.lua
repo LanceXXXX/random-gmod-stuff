@@ -1,0 +1,1 @@
+AddCSLuaFile("Client/cd_client.lua")
