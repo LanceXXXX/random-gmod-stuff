@@ -59,6 +59,74 @@ elseif cd_death == 26 then
 cd_sound = "cinematic_deaths/cd_drama27.ogg"
 elseif cd_death == 27 then
 cd_sound = "cinematic_deaths/cd_drama28.ogg"
+elseif cd_death == 28 then
+cd_sound = "cinematic_deaths/cd_drama29.ogg"
+elseif cd_death == 29 then
+cd_sound = "cinematic_deaths/cd_drama30.ogg"
+elseif cd_death == 30 then
+cd_sound = "cinematic_deaths/cd_drama31.ogg"
+elseif cd_death == 31 then
+cd_sound = "cinematic_deaths/cd_drama32.ogg"
+elseif cd_death == 32 then
+cd_sound = "cinematic_deaths/cd_drama33.ogg"
+elseif cd_death == 33 then
+cd_sound = "cinematic_deaths/cd_drama34.ogg"
+elseif cd_death == 34 then
+cd_sound = "cinematic_deaths/cd_drama35.ogg"
+elseif cd_death == 35 then
+cd_sound = "cinematic_deaths/cd_drama36.ogg"
+elseif cd_death == 36 then
+cd_sound = "cinematic_deaths/cd_drama37.ogg"
+elseif cd_death == 37 then
+cd_sound = "cinematic_deaths/cd_drama38.ogg"
+elseif cd_death == 38 then
+cd_sound = "cinematic_deaths/cd_drama39.ogg"
+elseif cd_death == 39 then
+cd_sound = "cinematic_deaths/cd_drama40.ogg"
+elseif cd_death == 40 then
+cd_sound = "cinematic_deaths/cd_drama41.ogg"
+elseif cd_death == 41 then
+cd_sound = "cinematic_deaths/cd_drama42.ogg"
+elseif cd_death == 42 then
+cd_sound = "cinematic_deaths/cd_drama43.ogg"
+elseif cd_death == 43 then
+cd_sound = "cinematic_deaths/cd_drama44.ogg"
+elseif cd_death == 44 then
+cd_sound = "cinematic_deaths/cd_drama45.ogg"
+elseif cd_death == 45 then
+cd_sound = "cinematic_deaths/cd_drama46.ogg"
+elseif cd_death == 46 then
+cd_sound = "cinematic_deaths/cd_drama47.ogg"
+elseif cd_death == 47 then
+cd_sound = "cinematic_deaths/cd_drama48.ogg"
+elseif cd_death == 48 then
+cd_sound = "cinematic_deaths/cd_drama49.ogg"
+elseif cd_death == 49 then
+cd_sound = "cinematic_deaths/cd_drama50.ogg"
+elseif cd_death == 50 then
+cd_sound = "cinematic_deaths/cd_drama51.ogg"
+elseif cd_death == 51 then
+cd_sound = "cinematic_deaths/cd_drama52.ogg"
+elseif cd_death == 52 then
+cd_sound = "cinematic_deaths/cd_drama53.ogg"
+elseif cd_death == 53 then
+cd_sound = "cinematic_deaths/cd_drama54.ogg"
+elseif cd_death == 54 then
+cd_sound = "cinematic_deaths/cd_drama55.ogg"
+elseif cd_death == 55 then
+cd_sound = "cinematic_deaths/cd_drama56.ogg"
+elseif cd_death == 56 then
+cd_sound = "cinematic_deaths/cd_drama57.ogg"
+elseif cd_death == 57 then
+cd_sound = "cinematic_deaths/cd_drama58.ogg"
+elseif cd_death == 58 then
+cd_sound = "cinematic_deaths/cd_drama59.ogg"
+elseif cd_death == 59 then
+cd_sound = "cinematic_deaths/cd_drama60.ogg"
+elseif cd_death == 60 then
+cd_sound = "cinematic_deaths/cd_drama61.ogg"
+elseif cd_death == 61 then
+cd_sound = "cinematic_deaths/cd_drama62.ogg"
 end
 
 surface.PlaySound(cd_sound)
