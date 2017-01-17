@@ -8,17 +8,47 @@ else
 cs_sound = string.sub(cs_sound,1,string.len(cs_sound) - string.len(cs_extension))
 end
 
+if cs_timescaling != 1 then
 net.Start("clientsounds_client_s2c")
 net.WriteEntity(ply)
 net.WriteString(cs_sound .. cs_extension)
 net.Broadcast()
+else
+if cs_time != 1.0 then
+net.Start("clientsounds_scaled_s2c")
+net.WriteEntity(ply)
+net.WriteString(cs_sound .. cs_extension)
+net.WriteFloat(game.GetTimeScale())
+net.Broadcast()
+else
+net.Start("clientsounds_client_s2c")
+net.WriteEntity(ply)
+net.WriteString(cs_sound .. cs_extension)
+net.Broadcast()
+end
+end
 end)
 
 net.Receive("clientsounds_random_c2s",function(len,ply)
+if cs_timescaling != 1 then
 net.Start("clientsounds_random_s2c")
 net.WriteEntity(ply)
 net.WriteString(cs_random[math.random(1,cs_max)])
 net.Broadcast()
+else
+if cs_time != 1.0 then
+net.Start("clientsounds_randomscaled_s2c")
+net.WriteEntity(ply)
+net.WriteString(cs_random[math.random(1,cs_max)])
+net.WriteFloat(game.GetTimeScale())
+net.Broadcast()
+else
+net.Start("clientsounds_random_s2c")
+net.WriteEntity(ply)
+net.WriteString(cs_random[math.random(1,cs_max)])
+net.Broadcast()
+end
+end
 end)
 
 net.Receive("clientsounds_global_c2s",function(len,ply)
@@ -102,10 +132,26 @@ else
 cs_sound = string.sub(cs_sound,1,string.len(cs_sound) - string.len(cs_extension))
 end
 
+if cs_timescaling != 1 then
 net.Start("clientsounds_client_s2c")
 net.WriteEntity(ply)
 net.WriteString(cs_sound .. cs_extension)
 net.Broadcast()
+else
+if cs_time != 1.0 then
+net.Start("clientsounds_scaled_s2c")
+net.WriteEntity(ply)
+net.WriteString(cs_sound .. cs_extension)
+net.WriteFloat(game.GetTimeScale())
+net.Broadcast()
+else
+net.Start("clientsounds_client_s2c")
+net.WriteEntity(ply)
+net.WriteString(cs_sound .. cs_extension)
+net.Broadcast()
+end
+end
+
 elseif ply:IsAdmin() || ply:IsSuperAdmin() then
 
 local cs_sound = string.sub(text,2)
@@ -136,6 +182,28 @@ cs_max = table.getn(cs_random)
 for k, v in pairs(cs_random) do
 resource.AddSingleFile("sound/" .. v)
 end
+
+local cs_cvar_timescaling = file.Read("cs_timescaling.txt","DATA")
+if cs_cvar_timescaling != nil then
+cs_cvar_timescaling = tonumber(cs_cvar_timescaling)
+if cs_cvar_timescaling == nil then cs_timescaling = 0 return end
+cs_timescaling = cs_cvar_timescaling
+else
+cs_timescaling = 0
+end
+end
+
+function clientsounds_cvar_timescaling(ply,cmd,args)
+local cs_cvar_timescaling = args[1]
+if cs_cvar_timescaling == nil then
+print("cs_timescaling" .. " = " .. cs_timescaling .. " ( def. \"0\" )\n - Enables time scaling for client sounds.")
+else
+cs_cvar_timescaling = tonumber(cs_cvar_timescaling)
+if cs_cvar_timescaling == nil then return end
+if cs_cvar_timescaling > 1 then cs_timescaling = 1 elseif cs_cvar_timescaling < 0 then cs_timescaling = 0 else cs_timescaling = cs_cvar_timescaling end
+
+file.Write("cs_timescaling.txt",cs_timescaling)
+end
 end
 
 util.AddNetworkString("clientsounds_client_c2s")
@@ -150,5 +218,10 @@ util.AddNetworkString("clientsounds_global_s2c")
 util.AddNetworkString("clientsounds_globalstop_s2c")
 util.AddNetworkString("clientsounds_stream_s2c")
 
+util.AddNetworkString("clientsounds_scaled_s2c")
+util.AddNetworkString("clientsounds_randomscaled_s2c")
+
 hook.Add("PlayerSay","Clientsounds Text Sound",clientsounds_textsound)
 hook.Add("Initialize","Clientsounds Random",clientsounds_initialize)
+
+concommand.Add("cs_timescaling",clientsounds_cvar_timescaling)
