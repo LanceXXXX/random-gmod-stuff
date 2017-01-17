@@ -72,6 +72,28 @@ end
 cs_player:EmitSound(cs_sound,86,100,1,CHAN_VOICE2)
 end)
 
+net.Receive("clientsounds_scaled_s2c",function(len,ply)
+if cs_spawned == nil then return end
+local cs_player = net.ReadEntity()
+local cs_sound = net.ReadString()
+local cs_time = net.ReadFloat()
+
+
+if cs_player != LocalPlayer() then
+if cs_soundscaled[cs_player] != nil then cs_soundscaled[cs_player]:Stop() end
+cs_soundscaled[cs_player] = CreateSound(cs_player,cs_sound)
+cs_soundscaled[cs_player]:Play()
+cs_soundscaled[cs_player]:SetSoundLevel(86)
+cs_soundscaled[cs_player]:ChangePitch(math.Clamp(cs_time * 250,0,100),0)
+end
+
+if cs_soundscaled2[cs_player] != nil then cs_soundscaled2[cs_player]:Stop() end
+cs_soundscaled2[cs_player] = CreateSound(cs_player,cs_sound)
+cs_soundscaled2[cs_player]:Play()
+cs_soundscaled2[cs_player]:SetSoundLevel(86)
+cs_soundscaled2[cs_player]:ChangePitch(math.Clamp(cs_time * 250,0,100),0)
+end)
+
 net.Receive("clientsounds_random_s2c",function(len,ply)
 if cs_spawned == nil then return end
 local cs_player = net.ReadEntity()
@@ -81,6 +103,30 @@ if cs_player != LocalPlayer() then
 cs_player:EmitSound(cs_sound,86,100,1,CHAN_VOICE)
 end
 cs_player:EmitSound(cs_sound,86,100,1,CHAN_VOICE2)
+
+print(cs_sound)
+end)
+
+net.Receive("clientsounds_randomscaled_s2c",function(len,ply)
+if cs_spawned == nil then return end
+local cs_player = net.ReadEntity()
+local cs_sound = net.ReadString()
+local cs_time = net.ReadFloat()
+
+if cs_player != LocalPlayer() then
+if cs_soundscaled[cs_player] != nil then cs_soundscaled[cs_player]:Stop() end
+cs_soundscaled[cs_player] = CreateSound(cs_player,cs_sound)
+cs_soundscaled[cs_player]:Play()
+cs_soundscaled[cs_player]:SetSoundLevel(86)
+cs_soundscaled[cs_player]:ChangePitch(math.Clamp(cs_time * 250,0,100),0)
+end
+
+if cs_soundscaled2[cs_player] != nil then cs_soundscaled2[cs_player]:Stop() end
+cs_soundscaled2[cs_player] = CreateSound(cs_player,cs_sound)
+cs_soundscaled2[cs_player]:Play()
+cs_soundscaled2[cs_player]:SetSoundLevel(86)
+cs_soundscaled2[cs_player]:ChangePitch(math.Clamp(cs_time * 250,0,100),0)
+
 print(cs_sound)
 end)
 
@@ -195,6 +241,9 @@ end
 function clientsounds_spawn()
 cs_spawned = true
 end
+
+cs_soundscaled = { }
+cs_soundscaled2 = { }
 
 concommand.Add("snd",clientsounds_client)
 concommand.Add("sndrandom",clientsounds_random)
