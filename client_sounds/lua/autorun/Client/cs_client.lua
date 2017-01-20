@@ -78,7 +78,6 @@ local cs_player = net.ReadEntity()
 local cs_sound = net.ReadString()
 local cs_time = net.ReadFloat()
 
-
 if cs_player != LocalPlayer() then
 if cs_soundscaled[cs_player] != nil then cs_soundscaled[cs_player]:Stop() end
 cs_soundscaled[cs_player] = CreateSound(cs_player,cs_sound)
@@ -131,17 +130,20 @@ print(cs_sound)
 end)
 
 net.Receive("clientsounds_global_s2c",function(len,ply)
+if cs_spawned == nil then return end
 local cs_sound = net.ReadString()
 
 RunConsoleCommand("play",cs_sound)
 end)
 
 net.Receive("clientsounds_globalstop_s2c",function(len,ply)
+if cs_spawned == nil then return end
 RunConsoleCommand("stopsound")
 if cs_currenturl != nil then cs_currenturl:Stop() end
 end)
 
 net.Receive("clientsounds_stream_s2c",function(len,ply)
+if cs_spawned == nil then return end
 if cs_blockurl > 0 then return end
 
 local cs_url = net.ReadString()
