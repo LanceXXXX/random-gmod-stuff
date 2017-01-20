@@ -1,4 +1,5 @@
-net.Receive("cinematic_death_c2s",function(len,ply)
+net.Receive("cinematic_death_s2c",function(len,ply)
+if cs_spawned == nil then return end
 local cd_death = net.ReadInt(8)
 cd_deathinprogress = true
 
@@ -127,12 +128,41 @@ elseif cd_death == 60 then
 cd_sound = "cinematic_deaths/cd_drama61.ogg"
 elseif cd_death == 61 then
 cd_sound = "cinematic_deaths/cd_drama62.ogg"
+elseif cd_death == 62 then
+cd_sound = "cinematic_deaths/cd_drama63.ogg"
+elseif cd_death == 63 then
+cd_sound = "cinematic_deaths/cd_drama64.ogg"
+elseif cd_death == 64 then
+cd_sound = "cinematic_deaths/cd_drama65.ogg"
+elseif cd_death == 65 then
+cd_sound = "cinematic_deaths/cd_drama65.ogg"
+elseif cd_death == 66 then
+cd_sound = "cinematic_deaths/cd_drama66.ogg"
+elseif cd_death == 67 then
+cd_sound = "cinematic_deaths/cd_drama67.ogg"
+elseif cd_death == 68 then
+cd_sound = "cinematic_deaths/cd_drama68.ogg"
+elseif cd_death == 69 then
+cd_sound = "cinematic_deaths/cd_drama69.ogg"
+elseif cd_death == 70 then
+cd_sound = "cinematic_deaths/cd_drama70.ogg"
+elseif cd_death == 71 then
+cd_sound = "cinematic_deaths/cd_drama71.ogg"
+elseif cd_death == 72 then
+cd_sound = "cinematic_deaths/cd_drama72.ogg"
+elseif cd_death == 73 then
+cd_sound = "cinematic_deaths/cd_drama73.ogg"
+elseif cd_death == 74 then
+cd_sound = "cinematic_deaths/cd_drama74.ogg"
+elseif cd_death == 75 then
+cd_sound = "cinematic_deaths/cd_drama75.ogg"
 end
 
 surface.PlaySound(cd_sound)
 end)
 
-net.Receive("cinematic_spawn_c2s",function(len,ply)
+net.Receive("cinematic_spawn_s2c",function(len,ply)
+if cs_spawned == nil then return end
 if cd_deathinprogress == nil then return end
 cd_deathinprogress = nil
 
@@ -142,6 +172,13 @@ end)
 function cinematic_grayscale()
 if cd_deathinprogress == nil then return end
 DrawColorModify(cd_grayscale_color)
+end
+
+function cinematic_spawn()
+cd_spawned = true
+
+net.Start("cinematic_spawn_c2s")
+net.SendToServer()
 end
 
 cd_grayscale_color = { 
@@ -157,3 +194,4 @@ cd_grayscale_color = {
 }
 
 hook.Add("RenderScreenspaceEffects","Cinematic Grayscale",cinematic_grayscale)
+hook.Add("InitPostEntity","Cinematic Spawn",cinematic_spawn)
