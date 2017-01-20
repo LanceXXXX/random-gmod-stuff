@@ -60,30 +60,64 @@ resource.AddSingleFile("sound/cinematic_deaths/cd_drama59.ogg")
 resource.AddSingleFile("sound/cinematic_deaths/cd_drama60.ogg")
 resource.AddSingleFile("sound/cinematic_deaths/cd_drama61.ogg")
 resource.AddSingleFile("sound/cinematic_deaths/cd_drama62.ogg")
+resource.AddSingleFile("sound/cinematic_deaths/cd_drama63.ogg")
+resource.AddSingleFile("sound/cinematic_deaths/cd_drama64.ogg")
+resource.AddSingleFile("sound/cinematic_deaths/cd_drama65.ogg")
+resource.AddSingleFile("sound/cinematic_deaths/cd_drama66.ogg")
+resource.AddSingleFile("sound/cinematic_deaths/cd_drama67.ogg")
+resource.AddSingleFile("sound/cinematic_deaths/cd_drama68.ogg")
+resource.AddSingleFile("sound/cinematic_deaths/cd_drama69.ogg")
+resource.AddSingleFile("sound/cinematic_deaths/cd_drama70.ogg")
+resource.AddSingleFile("sound/cinematic_deaths/cd_drama71.ogg")
+resource.AddSingleFile("sound/cinematic_deaths/cd_drama72.ogg")
+resource.AddSingleFile("sound/cinematic_deaths/cd_drama73.ogg")
+resource.AddSingleFile("sound/cinematic_deaths/cd_drama74.ogg")
+resource.AddSingleFile("sound/cinematic_deaths/cd_drama75.ogg")
+resource.AddSingleFile("sound/cinematic_deaths/cd_drama76.ogg")
 
-function cinematic_death()
+function cinematic_death(ply)
 if cd_enable == 0 then return end
+
+if cd_killed[ply] == nil then cd_killed[ply] = true end
 
 if cd_deathinprogress != nil then return end
 cd_deathinprogress = true
 
 game.SetTimeScale(0.25)
 
-net.Start("cinematic_death_c2s")
-net.WriteInt(math.random(0,61),8)
+cd_current = math.random(0,75)
+
+net.Start("cinematic_death_s2c")
+net.WriteInt(cd_current,8)
 net.Broadcast()
 end
 
-function cinematic_spawn()
-if cd_deathinprogress != nil then
-cd_deathinprogress = nil
+function cinematic_spawn(ply)
+if ply.cd_spawned == nil then return end
+if cd_deathinprogress == nil then return end
+if cd_killed[ply] == nil then return end
+
+for k, v in pairs(player.GetAll()) do
+cd_killed[v] = nil
+end
 
 game.SetTimeScale(1)
 
-net.Start("cinematic_spawn_c2s")
+net.Start("cinematic_spawn_s2c")
 net.Broadcast()
+
+cd_deathinprogress = nil
 end
-end
+
+net.Receive("cinematic_spawn_c2s",function(len,ply)
+ply.cd_spawned = true
+
+if cd_deathinprogress == nil then return end
+
+net.Start("cinematic_death_s2c")
+net.WriteInt(cd_current,8)
+net.Send(ply)
+end)
 
 function cinematic_cvar_enable(ply,cmd,args)
 local cd_cvar_enable = args[1]
@@ -109,10 +143,15 @@ cd_enable = 1
 end
 end
 
-util.AddNetworkString("cinematic_death_c2s")
+cd_spawned = { }
+cd_killed = { }
+
+util.AddNetworkString("cinematic_death_s2c")
+util.AddNetworkString("cinematic_spawn_s2c")
+
 util.AddNetworkString("cinematic_spawn_c2s")
 
-hook.Add("PostPlayerDeath","Cinematic Death",cinematic_death)
+hook.Add("DoPlayerDeath","Cinematic Death",cinematic_death)
 hook.Add("PlayerSpawn","Cinematic Spawn",cinematic_spawn)
 hook.Add("Initialize","Cinematic Initialize",cinematic_initialize)
 
