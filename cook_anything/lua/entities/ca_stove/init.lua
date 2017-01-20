@@ -25,8 +25,9 @@ if entity:GetClass() != "ca_food" then
 if entity:GetClass() == "ca_stove" then return end
 
 entity.food = ents.Create("ca_food")
-entity.food:SetModel(entity:GetModel())
-entity.food:SetSkin(entity:GetSkin())
+
+if entity:GetModel() != nil then entity.food:SetModel(entity:GetModel()) end
+if entity:GetSkin() != nil then entity.food:SetSkin(entity:GetSkin()) end
 
 entity.food:SetPos(entity:GetPos())
 if entity:OBBMaxs().x > 17 && entity:OBBMaxs().y > 26 then entity.food:SetAngles(entity:GetAngles()) end
