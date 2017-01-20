@@ -179,10 +179,6 @@ function clientsounds_initialize()
 cs_random = file.Find("sound/*.ogg","GAME","namedesc")
 cs_max = table.getn(cs_random)
 
-for k, v in pairs(cs_random) do
-resource.AddSingleFile("sound/" .. v)
-end
-
 local cs_cvar_timescaling = file.Read("cs_timescaling.txt","DATA")
 if cs_cvar_timescaling != nil then
 cs_cvar_timescaling = tonumber(cs_cvar_timescaling)
